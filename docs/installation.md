@@ -49,14 +49,15 @@ If you need to build the image, please follow the [build instructions](./build.m
         ADX_TENANT_ID=[SERVICE_PRINCIPAL_TENANT_ID]
         ```
 
-        Optional - Enable ApplicationInsights telemetry
+     * Optional - Enable ApplicationInsights telemetry
         ```sh
         APPLICATION_INSIGHTS_KEY=[INSTRUMENTATION_KEY]
         COLLECT_TELEMETRY=true
         ```
 
+     * Install the K2bridge chart
         ```sh
-        helm install k2bridge charts/k2bridge -n k2bridge --set image.repository=$REPOSITORY_NAME/$CONTAINER_NAME --set settings.adxClusterUrl="$ADX_URL" --set settings.adxDefaultDatabaseName="$ADX_DATABASE" --set settings.aadClientId="$ADX_CLIENT_ID" --set settings.aadClientSecret="$ADX_CLIENT_SECRET" --set settings.aadTenantId="$ADX_TENANT_ID" [--set image.tag=latest] [--set privateRegistry="$IMAGE_PULL_SECRET_NAME"] [--set settings.collectTelemetry=$COLLECT_TELEMETRY]
+        helm install k2bridge charts/k2bridge -n k2bridge --set image.repository=mcr.microsoft.com/azuredataexplorer/k2bridge --set settings.adxClusterUrl="$ADX_URL" --set settings.adxDefaultDatabaseName="$ADX_DATABASE" --set settings.aadClientId="$ADX_CLIENT_ID" --set settings.aadClientSecret="$ADX_CLIENT_SECRET" --set settings.aadTenantId="$ADX_TENANT_ID" [--set settings.enableQueryLogging="true"] [--set settings.instrumentationKey=%APPLICATION_INSIGHTS_KEY%] [--set image.tag=latest] [--set settings.collectTelemetry=$COLLECT_TELEMETRY]
         ```
 
         The complete set of configuration options can be found [here](./configuration.md).
@@ -69,8 +70,8 @@ If you need to build the image, please follow the [build instructions](./build.m
         ```
 
 1. Configure index-patterns  
-In a new installation of Kibana, you will need to configure the indexe-patterns to access your data.
-Navigate to Management -> Index Patterns and create new indexes.
+In a new installation of Kibana, you will need to configure the index-patterns to access your data.
+Navigate to Management -> Index Patterns -> Create index pattern.
 Note that the name of the index must be an **exact match** to the table name or function name, without any asterisk. You can copy the relevant line from the list.
 
 Notes:
